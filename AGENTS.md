@@ -79,6 +79,12 @@ dev-log/YYYY-MM-DD.md
 6. 保持 FastAPI API 不变，用新 workflow 替换 `DeepResearchAgent` 内部实现。
 7. 再考虑前端体验优化和报告导出能力。
 
+详细 LangGraph 迁移路线见：
+
+```text
+docs/langgraph-migration-roadmap.md
+```
+
 ## 提交前检查
 
 提交前至少检查：
