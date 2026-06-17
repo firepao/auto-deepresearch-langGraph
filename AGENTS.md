@@ -64,10 +64,10 @@ dev-log/YYYY-MM-DD.md
 
 ## 已知问题
 
-- 当前多个源码文件中存在中文乱码，疑似原始文件编码或复制过程导致。后续需要统一修复为 UTF-8。
+- 当前 Windows PowerShell `Get-Content` 可能把 UTF-8 中文显示成乱码；Python 按 UTF-8 读取源码时中文正常。不要在未验证原始字节的情况下做批量编码转换。
 - 后端 `pyproject.toml` 的项目 README 指向 `README.md`，但当前后端目录内没有独立 README；仓库根 README 已补充项目说明。
-- 当前代码尚未真正引入 LangGraph，README 中的 LangGraph 是后续重构目标。
-- 尚未建立自动化测试基线。
+- 已加入实验性 LangGraph scaffold，但还没有迁移真实研究节点。
+- 已建立基础测试，但还没有覆盖真实 LLM、搜索和 SSE 集成流程。
 
 ## 推荐重构路线
 
@@ -83,6 +83,14 @@ dev-log/YYYY-MM-DD.md
 
 ```text
 docs/langgraph-migration-roadmap.md
+```
+
+当前迁移入口：
+
+```text
+backend/src/graph/
+docs/sse-event-contract.md
+USE_LANGGRAPH_WORKFLOW=false
 ```
 
 ## 提交前检查

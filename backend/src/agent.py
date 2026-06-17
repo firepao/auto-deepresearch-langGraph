@@ -25,6 +25,7 @@ from services.reporter import ReportingService
 from services.search import dispatch_search, prepare_research_context
 from services.summarizer import SummarizationService
 from services.tool_events import ToolCallTracker
+from graph.workflow import LangGraphWorkflow, LangGraphWorkflowUnavailable
 
 logger = logging.getLogger(__name__)
 
@@ -124,6 +125,16 @@ class DeepResearchAgent:
 
     def run(self, topic: str) -> SummaryStateOutput:
         """Execute the research workflow and return the final report."""
+        if self.config.use_langgraph_workflow:
+            workflow = LangGraphWorkflow()
+            graph_state = workflow.invoke(topic)
+            report = graph_state.get("report_markdown", "")
+            return SummaryStateOutput(
+                running_summary=report,
+                report_markdown=report,
+                todo_items=[],
+            )
+
         state = SummaryState(research_topic=topic)
         state.todo_items = self.planner.plan_todo_list(state)
         self._drain_tool_events(state)
@@ -149,6 +160,14 @@ class DeepResearchAgent:
 
     def run_stream(self, topic: str) -> Iterator[dict[str, Any]]:
         """Execute the workflow yielding incremental progress events."""
+        if self.config.use_langgraph_workflow:
+            try:
+                workflow = LangGraphWorkflow()
+                yield from workflow.stream(topic)
+            except LangGraphWorkflowUnavailable as exc:
+                yield {"type": "error", "detail": str(exc)}
+            return
+
         state = SummaryState(research_topic=topic)
         logger.debug("Starting streaming research: topic=%s", topic)
         yield {"type": "status", "message": "初始化研究流程"}

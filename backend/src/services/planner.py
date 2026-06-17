@@ -113,6 +113,13 @@ class PlanningService:
     def _extract_json_payload(self, text: str) -> Optional[dict[str, Any] | list]:
         """Try to locate and parse a JSON object or array from the text."""
 
+        try:
+            payload = json.loads(text)
+            if isinstance(payload, (dict, list)):
+                return payload
+        except json.JSONDecodeError:
+            pass
+
         start = text.find("{")
         end = text.rfind("}")
         if start != -1 and end != -1 and end > start:

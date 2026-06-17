@@ -172,6 +172,23 @@ VITE_API_BASE_URL=http://localhost:8000
 - 为核心流程增加单元测试和最小集成测试；
 - 增加 `.env.example`，明确本地模型、搜索服务和笔记目录配置。
 
+## LangGraph 迁移状态
+
+当前已经完成迁移前期准备：
+
+- `docs/langgraph-migration-roadmap.md`：完整迁移路线；
+- `docs/sse-event-contract.md`：现有 `/research/stream` 事件契约；
+- `backend/src/graph/`：实验性 LangGraph workflow scaffold；
+- `USE_LANGGRAPH_WORKFLOW`：实验开关，默认 `false`，保持旧 HelloAgents 流程。
+
+开启实验图：
+
+```bash
+USE_LANGGRAPH_WORKFLOW=true
+```
+
+当前 LangGraph workflow 只是空图骨架，用于验证依赖、状态和 feature flag，不执行真实研究任务。
+
 ## 开发日志
 
 开发日志维护在 `dev-log/` 目录中，按日期命名，例如：

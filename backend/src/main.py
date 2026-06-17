@@ -99,7 +99,8 @@ def create_app() -> FastAPI:
 
         logger.info(
             "DeepResearch configuration loaded: provider=%s model=%s base_url=%s search_api=%s "
-            "max_loops=%s fetch_full_page=%s tool_calling=%s strip_thinking=%s api_key=%s",
+            "max_loops=%s fetch_full_page=%s tool_calling=%s strip_thinking=%s "
+            "langgraph_workflow=%s api_key=%s",
             config.llm_provider,
             config.resolved_model() or "unset",
             base_url,
@@ -108,6 +109,7 @@ def create_app() -> FastAPI:
             config.fetch_full_page,
             config.use_tool_calling,
             config.strip_thinking_tokens,
+            config.use_langgraph_workflow,
             _mask_secret(config.llm_api_key),
         )
 

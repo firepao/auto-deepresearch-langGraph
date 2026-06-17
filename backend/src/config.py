@@ -71,6 +71,11 @@ class Configuration(BaseModel):
         title="Use Tool Calling",
         description="Use tool calling instead of JSON mode for structured output",
     )
+    use_langgraph_workflow: bool = Field(
+        default=False,
+        title="Use LangGraph Workflow",
+        description="Enable the experimental LangGraph workflow scaffold",
+    )
     llm_api_key: Optional[str] = Field(
         default=None,
         title="LLM API Key",
@@ -112,6 +117,7 @@ class Configuration(BaseModel):
             "fetch_full_page": os.getenv("FETCH_FULL_PAGE"),
             "strip_thinking_tokens": os.getenv("STRIP_THINKING_TOKENS"),
             "use_tool_calling": os.getenv("USE_TOOL_CALLING"),
+            "use_langgraph_workflow": os.getenv("USE_LANGGRAPH_WORKFLOW"),
             "search_api": os.getenv("SEARCH_API"),
             "enable_notes": os.getenv("ENABLE_NOTES"),
             "notes_workspace": os.getenv("NOTES_WORKSPACE"),
